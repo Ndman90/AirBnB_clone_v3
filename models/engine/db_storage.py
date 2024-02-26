@@ -16,8 +16,14 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+classes = {
+        "Amenity": Amenity,
+        "City": City,
+        "Place": Place,
+        "Review": Review,
+        "State": State,
+        "User": User
+        }
 
 
 class DBStorage:
@@ -80,13 +86,11 @@ class DBStorage:
         Retrieve one object based on the class and its ID
         Returns the object or None if not found
         """
-        if cls not in classes.values() or not (id and isinstance(id, str)):
-            return None
-
-        objects_by_class = self.all(cls)
-        for key, value in objects_by_class.items():
-            if key.split(".")[1] == id:
-                return value
+        if cls in classes.values() and id and type(id) == str:
+            objects_by_class = self.all(cls)
+            for key, value in objects_by_class.items():
+                if key.split(".")[1] == id:
+                    return value
         return None
 
     def count(self, cls=None):
@@ -95,4 +99,6 @@ class DBStorage:
         If no class is passed, return the count of all objects in storage.
         """
         data = self.all(cls)
+        if cls in classes.values():
+            data = self.all(cls)
         return len(data)
