@@ -86,11 +86,13 @@ class DBStorage:
         Retrieve one object based on the class and its ID
         Returns the object or None if not found
         """
-        if cls in classes.values() and id and type(id) == str:
-            objects_by_class = self.all(cls)
-            for key, value in objects_by_class.items():
-                if key.split(".")[1] == id:
-                    return value
+        if cls not in classes.values() or not (id and isinstance(id, str)):
+            return None
+
+        objects_by_class = self.all(cls)
+        for key, value in objects_by_class.items():
+            if key.split(".")[1] == id:
+                return value
         return None
 
     def count(self, cls=None):
