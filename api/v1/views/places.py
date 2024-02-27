@@ -89,9 +89,12 @@ def update_place(place_id):
     storage.save()
     return jsonify(place.to_dict()), 200
 
-@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
-def places_search():
-    """Searches for places based on JSON content in the request body."""
+@app_views.route('/places_search', methods=['POST'],
+                 strict_slashes=False)
+def search_places_by_id():
+    """ search places by id """
+    if request.get_json() is None:
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     data = request.get_json()
 
